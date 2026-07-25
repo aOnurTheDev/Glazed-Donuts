@@ -19,29 +19,29 @@ font1 = font.Font(None, 36)
 finish = False
 run = True
 clock = time.Clock()
-skor = 0
+score = 0
 
 enemyres = "spike.png"
-playres = "resim.png"
-ikili = "2li.png"
-uclu = "3lu.png"
+playres = "player.png"
+ikili = "twospike.png"
+uclu = "threespike.png"
 
 eski_rekor = 0
 level = 0
 
-song = "onenon.mp3"
+song = "song.mp3"
 mixer.music.load(song)
 mixer.music.play(-1)
 
 try:
-    with open('kayit.json', 'r') as file:
+    with open('save.json', 'r') as file:
         data = json.load(file)
         eski_rekor = data.get("rekor", 0)
         level = data.get("level", 1)
 except (FileNotFoundError, json.JSONDecodeError, KeyError):
     eski_rekor = 0
     level = 1
-    with open('kayit.json', 'w') as file:
+    with open('save.json', 'w') as file:
         json.dump({"rekor": 0, "level": 1}, file, indent=4)
 
 class GameSprite(sprite.Sprite):
@@ -112,10 +112,10 @@ class Enemy(GameSprite):
         self.rect.y = 500 - self.rect.height
 
     def update(self):
-        global skor
+        global score
         self.rect.x -= self.speed
         if self.rect.right <= 0:
-            skor += 1
+            score += 1
             self.kill()
 
 player = Player(playres, 170, 450, 50, 50, 7)
@@ -141,21 +141,21 @@ while run:
                 finish = False
                 enemies.empty()
                 player.reset_position()
-                skor = 0
+                score = 0
                 mixer.music.play(-1)
             elif e.key == K_p:
-                skor += 999
+                score += 999
 
     if not finish:
         window.fill((30, 30, 50))
-        if skor >= 25:
+        if score >= 25:
             level += 1
-            with open('kayit.json', 'w') as file:
+            with open('save.json', 'w') as file:
                 json.dump({"level": level}, file, indent=4)
             finish = False
             enemies.empty()
             player.reset_position()
-            skor = 0
+            score = 0
             
             buyuk_font = font.Font(None, 72)
             seviyetext = buyuk_font.render(f"New Level: {level}", True, (255, 0, 0))
@@ -170,22 +170,22 @@ while run:
             mixer.music.stop()
 
 
-        if skor > eski_rekor:
-            eski_rekor = skor
-            with open('kayit.json', 'w') as file:
+        if score > eski_rekor:
+            eski_rekor = score
+            with open('save.json', 'w') as file:
                 json.dump({"rekor": eski_rekor}, file, indent=4)
 
-        lost_text = font1.render(f"Skor: {skor}", True, (255, 255, 255))
-        window.blit(lost_text, (10, 10))
-        rekor_text = font1.render(f"Level: {level}", True, (255, 255, 255))
-        window.blit(rekor_text, (10, 32))
+        score_text = font1.render(f"Score: {score}", True, (255, 255, 255))
+        window.blit(score_text, (10, 10))
+        level_text = font1.render(f"Level: {level}",  True, (255, 255, 255))
+        window.blit(level_text, (10, 32))
 
-        skor_rect = lost_text.get_rect(topleft=(10, 10))
-        rekor_rect = rekor_text.get_rect(topleft=(10, 32))
-        box_left = skor_rect.left - 5
-        box_top = skor_rect.top - 5
-        box_right = max(skor_rect.right, rekor_rect.right) + 5
-        box_bottom = rekor_rect.bottom + 5
+        score_rect = score_text.get_rect(topleft=(10, 10))
+        level_rect = level_text.get_rect(topleft=(10, 32))
+        box_left = score_rect.left - 5
+        box_top = score_rect.top - 5
+        box_right = max(score_rect.right, level_rect.right) + 5
+        box_bottom = level_rect.bottom + 5
         box_width = box_right - box_left
         box_height = box_bottom - box_top
         draw.rect(window, (255, 255, 255), (box_left, box_top, box_width, box_height), 2)
@@ -198,3 +198,4 @@ while run:
 
     display.update()
     clock.tick(60)
+    
