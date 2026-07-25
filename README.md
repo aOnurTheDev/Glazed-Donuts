@@ -10,7 +10,7 @@ A simple, Geometry Dash-inspired platformer game built with Python.
 1. Make sure you have Python installed.
 2. Install the required library:
    ```bash
-   pip install pygame bash```
+   pip install pygame ```bash
 
     Start the game:
    
