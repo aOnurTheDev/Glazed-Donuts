@@ -133,7 +133,7 @@ while run:
         if e.type == QUIT:
             run = False
         elif e.type == SPAWN_ENEMY and not finish:
-            enemhiz = 10 + (2 * level)
+            enemhiz = 14 + (2 * level)
             new_enemy = Enemy(enemyres, win_width, 450, 50, 50, enemhiz)
             enemies.add(new_enemy)
         elif e.type == KEYDOWN:
@@ -156,14 +156,14 @@ while run:
             enemies.empty()
             player.reset_position()
             skor = 0
-            mixer.music.stop()
+            
             buyuk_font = font.Font(None, 72)
             seviyetext = buyuk_font.render(f"New Level: {level}", True, (255, 0, 0))
             text_rect = seviyetext.get_rect(center=(win_width / 2, win_height / 2))
             window.blit(seviyetext, text_rect)
             display.update()
             sleep(2)
-            mixer.music.play(-1)
+            
 
         if sprite.spritecollide(player, enemies, False):
             finish = True
