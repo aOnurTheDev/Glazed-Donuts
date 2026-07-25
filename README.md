@@ -13,7 +13,7 @@ A simple, Geometry Dash-inspired platformer game built with Python.
    pip install pygame
 
     Start the game:
-    Bash
+   
 
     python main.py
 
