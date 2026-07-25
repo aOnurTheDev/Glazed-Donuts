@@ -33,6 +33,12 @@ song = "song.mp3"
 mixer.music.load(song)
 mixer.music.play(-1)
 
+def timer(level):
+    if level < 14:
+        return 1200 - (level * 50)
+    return 500
+
+
 try:
     with open('save.json', 'r') as file:
         data = json.load(file)
@@ -126,7 +132,7 @@ platforms.add(Platform(0, 500, win_width, 400, "#023047"))
 enemies = sprite.Group()
 
 SPAWN_ENEMY = USEREVENT + 1
-time.set_timer(SPAWN_ENEMY, 1200)
+time.set_timer(SPAWN_ENEMY, timer(level))
 
 while run:
     for e in event.get():
@@ -145,6 +151,7 @@ while run:
                 mixer.music.play(-1)
             elif e.key == K_p:
                 score += 999
+                
 
     if not finish:
         window.fill((30, 30, 50))
