@@ -142,6 +142,7 @@ while run:
                 enemies.empty()
                 player.reset_position()
                 skor = 0
+                mixer.music.play(-1)
             elif e.key == K_p:
                 skor += 999
 
@@ -155,15 +156,19 @@ while run:
             enemies.empty()
             player.reset_position()
             skor = 0
+            mixer.music.stop()
             buyuk_font = font.Font(None, 72)
             seviyetext = buyuk_font.render(f"New Level: {level}", True, (255, 0, 0))
             text_rect = seviyetext.get_rect(center=(win_width / 2, win_height / 2))
             window.blit(seviyetext, text_rect)
             display.update()
             sleep(2)
+            mixer.music.play(-1)
 
         if sprite.spritecollide(player, enemies, False):
             finish = True
+            mixer.music.stop()
+
 
         if skor > eski_rekor:
             eski_rekor = skor
