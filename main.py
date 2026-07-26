@@ -38,6 +38,21 @@ def timer(level):
         return 1200 - (level * 50)
     return 500
 
+def random_text():
+    texts = [
+        "Keep going!",
+        "You're doing great!",
+        "Watch out for spikes!",
+        "Jump higher!",
+        "Level up soon!",
+        "Stay focused!",
+        "Don't give up!",
+        "Almost there!",
+        "You can do it!",
+        "Great job!"
+    ]
+    return texts[randint(0, len(texts) - 1)]
+
 
 try:
     with open('save.json', 'r') as file:
@@ -175,9 +190,9 @@ while run:
         if sprite.spritecollide(player, enemies, False):
             finish = True
             mixer.music.stop()
-            sleep(0.5)
+            sleep(0.25)
             buyuk_font = font.Font(None, 72)
-            resettext = buyuk_font.render(f"Try Again!", True, (255, 0, 0))
+            resettext = buyuk_font.render(f"{random_text()}", True, (255, 0, 0))
             text_rect2 = resettext.get_rect(center=(win_width / 2, win_height / 2))
             window.blit(resettext, text_rect2)
             display.update()
