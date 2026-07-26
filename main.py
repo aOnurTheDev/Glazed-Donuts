@@ -175,6 +175,18 @@ while run:
         if sprite.spritecollide(player, enemies, False):
             finish = True
             mixer.music.stop()
+            sleep(0.5)
+            buyuk_font = font.Font(None, 72)
+            resettext = buyuk_font.render(f"Try Again!", True, (255, 0, 0))
+            text_rect2 = resettext.get_rect(center=(win_width / 2, win_height / 2))
+            window.blit(resettext, text_rect2)
+            display.update()
+            sleep(1)
+            finish = False
+            enemies.empty()
+            player.reset_position()
+            score = 0
+            mixer.music.play(-1)
 
 
         if score > eski_rekor:
