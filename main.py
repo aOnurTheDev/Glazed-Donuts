@@ -26,7 +26,6 @@ playres = "player.png"
 ikili = "twospike.png"
 uclu = "threespike.png"
 
-eski_rekor = 0
 level = 0
 
 song = "song.mp3"
@@ -57,13 +56,11 @@ def random_text():
 try:
     with open('save.json', 'r') as file:
         data = json.load(file)
-        eski_rekor = data.get("rekor", 0)
         level = data.get("level", 1)
 except (FileNotFoundError, json.JSONDecodeError, KeyError):
-    eski_rekor = 0
     level = 1
     with open('save.json', 'w') as file:
-        json.dump({"rekor": 0, "level": 1}, file, indent=4)
+        json.dump({"level": 1}, file, indent=4)
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
@@ -223,11 +220,6 @@ while run:
             score = 0
             mixer.music.play(-1)
 
-
-        if score > eski_rekor:
-            eski_rekor = score
-            with open('save.json', 'w') as file:
-                json.dump({"rekor": eski_rekor}, file, indent=4)
 
         score_text = font1.render(f"Score: {score}", True, (255, 255, 255))
         window.blit(score_text, (10, 10))
