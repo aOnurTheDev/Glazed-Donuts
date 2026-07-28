@@ -92,6 +92,8 @@ class Platform(sprite.Sprite):
 class Player(GameSprite):
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
         super().__init__(player_image, player_x, player_y, size_x, size_y, player_speed)
+        self.orig_image = self.image.copy()
+        self.angle = 0
         self.y_vel = 0
         self.is_jump = True
         self.gravity = 1
@@ -107,16 +109,34 @@ class Player(GameSprite):
                 self.rect.bottom = plat.rect.top
                 self.y_vel = 0
                 self.is_jump = False
+                
         if not self.is_jump:
             if keys[K_SPACE]:
                 self.y_vel = self.jump_power
                 self.is_jump = True
+
+        if self.is_jump:
+            self.angle = max(-45, min(45, -self.y_vel * 2))
+        else:
+            if abs(self.angle) > 1:
+                self.angle *= 0.8
+            else:
+                self.angle = 0
+
+        center = self.rect.center
+        self.image = transform.rotate(self.orig_image, self.angle)
+        self.rect = self.image.get_rect(center=center)
 
     def reset_position(self):
         self.rect.x = 170
         self.rect.y = 450
         self.y_vel = 0
         self.is_jump = True
+        self.angle = 0
+        self.image = self.orig_image.copy()
+        self.rect = self.image.get_rect()
+        self.rect.x = 170
+        self.rect.y = 450
 
 class Enemy(GameSprite):
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
